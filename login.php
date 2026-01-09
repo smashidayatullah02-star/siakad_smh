@@ -77,20 +77,6 @@ function get_client_ip_env() {
 $ipku = get_client_ip_env();
 
 
-					
-			
-			
-																	
-				
-
-
-
-
-
-
-
-
-
 
 //jika batal
 if ($_POST['btnBTL'])
@@ -99,11 +85,7 @@ if ($_POST['btnBTL'])
 	xloc($filenya);
 	exit();
 	}
-
-
-
-
-
+//jika ok
 if ($_POST['btnOK'])
 	{
 	//ambil nilai
@@ -153,8 +135,6 @@ if ($_POST['btnOK'])
 				$_SESSION['guru_session'] = "GURU MAPEL";
 				$_SESSION['hajirobe_session'] = $hajirobe;
 				$_SESSION['janiskd'] = "admgr";
-
-
 				
 				//detail
 				$ku_yes = "GURU MAPEL";
