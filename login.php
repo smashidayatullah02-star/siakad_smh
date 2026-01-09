@@ -1,23 +1,4 @@
 <?php
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-/////// Dibuat oleh :                                           ///////
-/////// Agus Muhajir, S.Kom                                     ///////
-/////// URL 	:                                               ///////
-///////     * http://github.com/hajirodeon                      ///////
-///////     * http://gitlab.com/hajirodeon                      ///////
-///////     * http://sisfokol.wordpress.com                     ///////
-///////     * http://hajirodeon.wordpress.com                   ///////
-///////     * http://yahoogroup.com/groups/sisfokol             ///////
-///////     * https://www.youtube.com/@hajirodeon               ///////
-///////////////////////////////////////////////////////////////////////
-/////// E-Mail	:                                               ///////
-///////     * hajirodeon@yahoo.com                              ///////
-///////     * hajirodeon@gmail.com                              ///////
-/////// HP/SMS/WA : 081-829-88-54                               ///////
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-
 session_start();
 
 
@@ -49,29 +30,30 @@ $pesan = "Ada Kesalahan Username/Password. Silahkan Diperhatikan Lagi..!!";
 
 //kasi log login ///////////////////////////////////////////////////////////////////////////////////
 $todayx = $today;
-	
 
 
-	//ketahui ip
-function get_client_ip_env() {
+
+//ketahui ip
+function get_client_ip_env()
+{
 	$ipaddress = '';
 	if (getenv('HTTP_CLIENT_IP'))
 		$ipaddress = getenv('HTTP_CLIENT_IP');
-	else if(getenv('HTTP_X_FORWARDED_FOR'))
+	else if (getenv('HTTP_X_FORWARDED_FOR'))
 		$ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-	else if(getenv('HTTP_X_FORWARDED'))
+	else if (getenv('HTTP_X_FORWARDED'))
 		$ipaddress = getenv('HTTP_X_FORWARDED');
-	else if(getenv('HTTP_FORWARDED_FOR'))
+	else if (getenv('HTTP_FORWARDED_FOR'))
 		$ipaddress = getenv('HTTP_FORWARDED_FOR');
-	else if(getenv('HTTP_FORWARDED'))
+	else if (getenv('HTTP_FORWARDED'))
 		$ipaddress = getenv('HTTP_FORWARDED');
-	else if(getenv('REMOTE_ADDR'))
+	else if (getenv('REMOTE_ADDR'))
 		$ipaddress = getenv('REMOTE_ADDR');
 	else
 		$ipaddress = 'UNKNOWN';
-	
-		return $ipaddress;
-	}
+
+	return $ipaddress;
+}
 
 
 $ipku = get_client_ip_env();
@@ -79,49 +61,42 @@ $ipku = get_client_ip_env();
 
 
 //jika batal
-if ($_POST['btnBTL'])
-	{
+if ($_POST['btnBTL']) {
 	//re-direct
 	xloc($filenya);
 	exit();
-	}
+}
 //jika ok
-if ($_POST['btnOK'])
-	{
+if ($_POST['btnOK']) {
 	//ambil nilai
 	$tipe = nosql($_POST["tipe"]);
 	$username = cegah($_POST["usernamex"]);
 	$password = md5(cegah($_POST["passwordx"]));
 
-	
+
 	//cek null
-	if ((empty($tipe)) OR (empty($username)) OR (empty($password)))
-		{
+	if ((empty($tipe)) or (empty($username)) or (empty($password))) {
 		//diskonek
 		xclose($koneksi);
 
 		//re-direct
 		$pesan = "Input Tidak Lengkap. Harap Diulangi...!!";
-		pekem($pesan,$filenya);
+		pekem($pesan, $filenya);
 		exit();
-		}
-	else
-		{
+	} else {
 		//jika tp01 --> GURU ................................................................................
-		if ($tipe == "tp01")
-			{
+		if ($tipe == "tp01") {
 			//query
-			$q = mysqli_query($koneksi, "SELECT m_pegawai.*, m_pegawai.kd AS mpkd, m_mapel.* ".
-											"FROM m_pegawai, m_mapel ".
-											"WHERE m_mapel.pegawai_kd = m_pegawai.kd ".
-											"AND m_pegawai.usernamex = '$username' ".
-											"AND m_pegawai.passwordx = '$password'");
+			$q = mysqli_query($koneksi, "SELECT m_pegawai.*, m_pegawai.kd AS mpkd, m_mapel.* " .
+				"FROM m_pegawai, m_mapel " .
+				"WHERE m_mapel.pegawai_kd = m_pegawai.kd " .
+				"AND m_pegawai.usernamex = '$username' " .
+				"AND m_pegawai.passwordx = '$password'");
 			$row = mysqli_fetch_assoc($q);
 			$total = mysqli_num_rows($q);
 
 			//cek login
-			if ($total != 0)
-				{
+			if ($total != 0) {
 				session_start();
 
 				//bikin session
@@ -135,21 +110,21 @@ if ($_POST['btnOK'])
 				$_SESSION['guru_session'] = "GURU MAPEL";
 				$_SESSION['hajirobe_session'] = $hajirobe;
 				$_SESSION['janiskd'] = "admgr";
-				
+
 				//detail
 				$ku_yes = "GURU MAPEL";
 				$ku_kd = cegah($row['mpkd']);
 				$ku_kode = cegah($row['kode']);
 				$ku_nama = cegah($row['nama']);
-			
-					
-				
-				
+
+
+
+
 				//insert
-				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, ".
-											"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES ".
-											"('$x', '$ku_kd', '$ku_kode', '$ku_nama', ".
-											"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
+				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, " .
+					"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES " .
+					"('$x', '$ku_kd', '$ku_kode', '$ku_nama', " .
+					"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
 				//kasi log login ///////////////////////////////////////////////////////////////////////////////////
 
 
@@ -166,9 +141,7 @@ if ($_POST['btnOK'])
 				$ke = "admgr/index.php";
 				xloc($ke);
 				exit();
-				}
-			else
-				{
+			} else {
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -176,27 +149,25 @@ if ($_POST['btnOK'])
 				//re-direct
 				pekem($pesan, $filenya);
 				exit();
-				}
 			}
+		}
 		//...................................................................................................
 
 
 
 
 		//jika tp02 --> SISWA ...............................................................................
-		if ($tipe == "tp02")
-			{
+		if ($tipe == "tp02") {
 			//query
-			$q = mysqli_query($koneksi, "SELECT * FROM m_siswa ".
-											"WHERE usernamex = '$username' ".
-											"AND passwordx = '$password'");
+			$q = mysqli_query($koneksi, "SELECT * FROM m_siswa " .
+				"WHERE usernamex = '$username' " .
+				"AND passwordx = '$password'");
 			$row = mysqli_fetch_assoc($q);
 			$total = mysqli_num_rows($q);
 
 
 			//cek login
-			if ($total != 0)
-				{
+			if ($total != 0) {
 				session_start();
 
 				//bikin session
@@ -215,19 +186,19 @@ if ($_POST['btnOK'])
 				$_SESSION['username1_session'] = $username;
 				$_SESSION['pass1_session'] = $password;
 				$_SESSION['janiskd'] = "admsw";
-				
+
 				//detail
 				$ku_yes = "SISWA";
 				$ku_kd = cegah($row['kd']);
 				$ku_kode = cegah($row['kode']);
 				$ku_nama = cegah($row['nama']);
-						
-				
+
+
 				//insert
-				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, ".
-											"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES ".
-											"('$x', '$ku_kd', '$ku_kode', '$ku_nama', ".
-											"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
+				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, " .
+					"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES " .
+					"('$x', '$ku_kd', '$ku_kode', '$ku_nama', " .
+					"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
 				//kasi log login ///////////////////////////////////////////////////////////////////////////////////
 
 
@@ -242,9 +213,7 @@ if ($_POST['btnOK'])
 				$ke = "admsw/index.php";
 				xloc($ke);
 				exit();
-				}
-			else
-				{
+			} else {
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -252,8 +221,8 @@ if ($_POST['btnOK'])
 				//re-direct
 				pekem($pesan, $filenya);
 				exit();
-				}
 			}
+		}
 		//...................................................................................................
 
 
@@ -264,20 +233,18 @@ if ($_POST['btnOK'])
 
 
 		//jika tp03 --> WALI KELAS ..........................................................................
-		if ($tipe == "tp03")
-			{
+		if ($tipe == "tp03") {
 			//query
-			$q = mysqli_query($koneksi, "SELECT m_walikelas.*, m_pegawai.*, m_pegawai.kd AS mpkd ".
-											"FROM m_walikelas, m_pegawai ".
-											"WHERE m_walikelas.peg_kd = m_pegawai.kd ".
-											"AND m_pegawai.usernamex = '$username' ".
-											"AND m_pegawai.passwordx = '$password'");
+			$q = mysqli_query($koneksi, "SELECT m_walikelas.*, m_pegawai.*, m_pegawai.kd AS mpkd " .
+				"FROM m_walikelas, m_pegawai " .
+				"WHERE m_walikelas.peg_kd = m_pegawai.kd " .
+				"AND m_pegawai.usernamex = '$username' " .
+				"AND m_pegawai.passwordx = '$password'");
 			$row = mysqli_fetch_assoc($q);
 			$total = mysqli_num_rows($q);
 
 			//cek login
-			if ($total != 0)
-				{
+			if ($total != 0) {
 				session_start();
 
 				//bikin session
@@ -286,7 +253,7 @@ if ($_POST['btnOK'])
 				$_SESSION['no1_session'] = nosql($row['kode']);
 				$_SESSION['nip1_session'] = nosql($row['kode']);
 				$_SESSION['nm1_session'] = balikin($row['nama']);
-								
+
 				$_SESSION['kd3_session'] = nosql($row['mpkd']);
 				$_SESSION['nip3_session'] = nosql($row['kode']);
 				$_SESSION['username3_session'] = $username;
@@ -296,28 +263,28 @@ if ($_POST['btnOK'])
 				$_SESSION['hajirobe_session'] = $hajirobe;
 				$_SESSION['janiskd'] = "admwk";
 
-				
-								
+
+
 				//detail
 				$ku_yes = "WALI KELAS";
 				$ku_kd = cegah($row['mpkd']);
 				$ku_kode = cegah($row['nip']);
 				$ku_nama = cegah($row['nama']);
-			
-					
-				
-				
+
+
+
+
 				//insert
-				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, ".
-											"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES ".
-											"('$x', '$ku_kd', '$ku_kode', '$ku_nama', ".
-											"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
+				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, " .
+					"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES " .
+					"('$x', '$ku_kd', '$ku_kode', '$ku_nama', " .
+					"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
 				//kasi log login ///////////////////////////////////////////////////////////////////////////////////
 
-				
-				
-				
-				
+
+
+
+
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -326,9 +293,7 @@ if ($_POST['btnOK'])
 				$ke = "admwk/index.php";
 				xloc($ke);
 				exit();
-				}
-			else
-				{
+			} else {
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -336,8 +301,8 @@ if ($_POST['btnOK'])
 				//re-direct
 				pekem($pesan, $filenya);
 				exit();
-				}
 			}
+		}
 		//...................................................................................................
 
 
@@ -345,20 +310,18 @@ if ($_POST['btnOK'])
 
 
 		//jika tp04 --> Kepala Sekolah ......................................................................
-		if ($tipe == "tp04")
-			{
+		if ($tipe == "tp04") {
 			//query
-			$q = mysqli_query($koneksi, "SELECT m_ks.*, m_pegawai.*, m_pegawai.kd AS akkd ".
-											"FROM m_ks, m_pegawai ".
-											"WHERE m_ks.peg_kd = m_pegawai.kd ".
-											"AND m_pegawai.usernamex = '$username' ".
-											"AND m_pegawai.passwordx = '$password'");
+			$q = mysqli_query($koneksi, "SELECT m_ks.*, m_pegawai.*, m_pegawai.kd AS akkd " .
+				"FROM m_ks, m_pegawai " .
+				"WHERE m_ks.peg_kd = m_pegawai.kd " .
+				"AND m_pegawai.usernamex = '$username' " .
+				"AND m_pegawai.passwordx = '$password'");
 			$row = mysqli_fetch_assoc($q);
 			$total = mysqli_num_rows($q);
 
 			//cek login
-			if ($total != 0)
-				{
+			if ($total != 0) {
 				session_start();
 
 				//bikin session
@@ -367,7 +330,7 @@ if ($_POST['btnOK'])
 				$_SESSION['no1_session'] = nosql($row['kode']);
 				$_SESSION['nip1_session'] = nosql($row['kode']);
 				$_SESSION['nm1_session'] = balikin($row['nama']);
-				
+
 				$_SESSION['kd4_session'] = nosql($row['akkd']);
 				$_SESSION['nip4_session'] = nosql($row['kode']);
 				$_SESSION['username4_session'] = $username;
@@ -377,27 +340,27 @@ if ($_POST['btnOK'])
 				$_SESSION['hajirobe_session'] = $hajirobe;
 				$_SESSION['janiskd'] = "admks";
 
-				
-								
+
+
 				//detail
 				$ku_yes = "KEPALA SEKOLAH";
 				$ku_kd = cegah($row['akkd']);
 				$ku_kode = cegah($row['kode']);
 				$ku_nama = cegah($row['nama']);
-			
-					
-				
-				
+
+
+
+
 				//insert
-				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, ".
-											"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES ".
-											"('$x', '$ku_kd', '$ku_kode', '$ku_nama', ".
-											"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
+				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, " .
+					"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES " .
+					"('$x', '$ku_kd', '$ku_kode', '$ku_nama', " .
+					"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
 				//kasi log login ///////////////////////////////////////////////////////////////////////////////////
 
-				
-				
-				
+
+
+
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -406,9 +369,7 @@ if ($_POST['btnOK'])
 				$ke = "admks/index.php";
 				xloc($ke);
 				exit();
-				}
-			else
-				{
+			} else {
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -416,8 +377,8 @@ if ($_POST['btnOK'])
 				//re-direct
 				pekem($pesan, $filenya);
 				exit();
-				}
 			}
+		}
 		//...................................................................................................
 
 
@@ -427,18 +388,16 @@ if ($_POST['btnOK'])
 
 
 		//jika tp06 --> Administrator .......................................................................
-		if ($tipe == "tp06")
-			{
+		if ($tipe == "tp06") {
 			//query
-			$q = mysqli_query($koneksi, "SELECT * FROM adminx ".
-											"WHERE usernamex = '$username' ".
-											"AND passwordx = '$password'");
+			$q = mysqli_query($koneksi, "SELECT * FROM adminx " .
+				"WHERE usernamex = '$username' " .
+				"AND passwordx = '$password'");
 			$row = mysqli_fetch_assoc($q);
 			$total = mysqli_num_rows($q);
 
 			//cek login
-			if ($total != 0)
-				{
+			if ($total != 0) {
 				session_start();
 
 				//bikin session
@@ -460,22 +419,22 @@ if ($_POST['btnOK'])
 				$ku_kd = nosql($row['kd']);
 				$ku_kode = $ku_yes;
 				$ku_nama = $ku_yes;
-			
-					
-				
-				
+
+
+
+
 				//insert
-				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, ".
-											"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES ".
-											"('$x', '$ku_kd', '$ku_kode', '$ku_nama', ".
-											"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
+				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, " .
+					"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES " .
+					"('$x', '$ku_kd', '$ku_kode', '$ku_nama', " .
+					"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
 				//kasi log login ///////////////////////////////////////////////////////////////////////////////////
 
 
 
 
 
-				
+
 
 
 				//diskonek
@@ -486,9 +445,7 @@ if ($_POST['btnOK'])
 				$ke = "adm/index.php";
 				xloc($ke);
 				exit();
-				}
-			else
-				{
+			} else {
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -496,8 +453,8 @@ if ($_POST['btnOK'])
 				//re-direct
 				pekem($pesan, $filenya);
 				exit();
-				}
 			}
+		}
 		//...................................................................................................
 
 
@@ -506,30 +463,28 @@ if ($_POST['btnOK'])
 
 
 
-		
-		
+
+
 		//jika tp033 --> piket ..........................................................................
-		if ($tipe == "tp033")
-			{
+		if ($tipe == "tp033") {
 			//query
-			$q = mysqli_query($koneksi, "SELECT * FROM m_piket ".
-											"WHERE usernamex = '$username' ".
-											"AND passwordx = '$password'");
+			$q = mysqli_query($koneksi, "SELECT * FROM m_piket " .
+				"WHERE usernamex = '$username' " .
+				"AND passwordx = '$password'");
 			$row = mysqli_fetch_assoc($q);
 			$total = mysqli_num_rows($q);
-	
+
 			//cek login
-			if ($total != 0)
-				{
+			if ($total != 0) {
 				session_start();
-	
+
 				//nilai
 				$r_kd = cegah($row['kd']);
 				$r_kode = cegah($row['kode']);
 				$r_nama = cegah($row['nama']);
 				$r_jabatan = cegah($row['jabatan']);
 				$r_tglnya = "$tahun-$bulan-$tanggal";
-				
+
 
 				//nilai
 				$_SESSION['kd1_session'] = nosql($row['kd']);
@@ -537,7 +492,7 @@ if ($_POST['btnOK'])
 				$_SESSION['no1_session'] = nosql($row['kode']);
 				$_SESSION['nip1_session'] = nosql($row['kode']);
 				$_SESSION['nm1_session'] = balikin($row['nama']);
-				
+
 				$_SESSION['kd33_session'] = nosql($row['kd']);
 				$_SESSION['nip33_session'] = nosql($row['kode']);
 				$_SESSION['username33_session'] = $username;
@@ -547,67 +502,63 @@ if ($_POST['btnOK'])
 				$_SESSION['hajirobe_session'] = $hajirobe;
 				$_SESSION['janiskd'] = "admpiket";
 
-			
-				
-								
+
+
+
 				//detail
 				$ku_yes = "PIKET";
 				$ku_kd = cegah($row['kd']);
 				$ku_kode = cegah($row['kode']);
 				$ku_nama = cegah($row['nama']);
-			
-					
-				
-				
+
+
+
+
 				//insert
-				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, ".
-											"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES ".
-											"('$x', '$ku_kd', '$ku_kode', '$ku_nama', ".
-											"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
+				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, " .
+					"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES " .
+					"('$x', '$ku_kd', '$ku_kode', '$ku_nama', " .
+					"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
 				//kasi log login ///////////////////////////////////////////////////////////////////////////////////
 
-				
 
 
-				
+
+
 				//re-direct
 				$ke = "admpiket/index.php";
 				xloc($ke);
 				exit();
-				}
-			else
-				{
+			} else {
 				//re-direct
 				pekem($pesan, $filenya);
 				exit();
-				}
-			//...................................................................................................				
 			}
+			//...................................................................................................				
+		}
 		//...................................................................................................
-				
 
 
 
 
 
 
-		
-		
+
+
+
 		//jika tp011 --> bk ..........................................................................
-		if ($tipe == "tp011")
-			{
+		if ($tipe == "tp011") {
 			//query
-			$q = mysqli_query($koneksi, "SELECT m_gurubk.*, m_pegawai.*, m_pegawai.kd AS akkd ".
-											"FROM m_gurubk, m_pegawai ".
-											"WHERE m_gurubk.peg_kd = m_pegawai.kd ".
-											"AND m_pegawai.usernamex = '$username' ".
-											"AND m_pegawai.passwordx = '$password'");
+			$q = mysqli_query($koneksi, "SELECT m_gurubk.*, m_pegawai.*, m_pegawai.kd AS akkd " .
+				"FROM m_gurubk, m_pegawai " .
+				"WHERE m_gurubk.peg_kd = m_pegawai.kd " .
+				"AND m_pegawai.usernamex = '$username' " .
+				"AND m_pegawai.passwordx = '$password'");
 			$row = mysqli_fetch_assoc($q);
 			$total = mysqli_num_rows($q);
 
 			//cek login
-			if ($total != 0)
-				{
+			if ($total != 0) {
 				session_start();
 
 				//nilai
@@ -616,7 +567,7 @@ if ($_POST['btnOK'])
 				$_SESSION['no1_session'] = nosql($row['kode']);
 				$_SESSION['nip1_session'] = nosql($row['kode']);
 				$_SESSION['nm1_session'] = balikin($row['nama']);
-				
+
 				$_SESSION['kd11_session'] = nosql($row['akkd']);
 				$_SESSION['nip11_session'] = nosql($row['kode']);
 				$_SESSION['username11_session'] = $username;
@@ -626,30 +577,30 @@ if ($_POST['btnOK'])
 				$_SESSION['hajirobe_session'] = $hajirobe;
 				$_SESSION['janiskd'] = "admbk";
 
-				
-				
-								
+
+
+
 				//detail
 				$ku_yes = "Guru BK";
 				$ku_kd = cegah($row['akkd']);
 				$ku_kode = cegah($row['kode']);
 				$ku_nama = cegah($row['nama']);
-			
-					
-				
-				
+
+
+
+
 				//insert
-				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, ".
-											"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES ".
-											"('$x', '$ku_kd', '$ku_kode', '$ku_nama', ".
-											"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
+				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, " .
+					"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES " .
+					"('$x', '$ku_kd', '$ku_kode', '$ku_nama', " .
+					"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
 				//kasi log login ///////////////////////////////////////////////////////////////////////////////////
 
-				
-				
-				
-				
-				
+
+
+
+
+
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -658,9 +609,7 @@ if ($_POST['btnOK'])
 				$ke = "admbk/index.php";
 				xloc($ke);
 				exit();
-				}
-			else
-				{
+			} else {
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -668,32 +617,30 @@ if ($_POST['btnOK'])
 				//re-direct
 				pekem($pesan, $filenya);
 				exit();
-				}
 			}
+		}
 		//...................................................................................................
-				
 
 
 
 
 
-		
-		
+
+
+
 		//jika tp042 --> bendahara ..........................................................................
-		if ($tipe == "tp042")
-			{
+		if ($tipe == "tp042") {
 			//query
-			$q = mysqli_query($koneksi, "SELECT m_bendahara.*, m_pegawai.*, m_pegawai.kd AS akkd ".
-											"FROM m_bendahara, m_pegawai ".
-											"WHERE m_bendahara.peg_kd = m_pegawai.kd ".
-											"AND m_pegawai.usernamex = '$username' ".
-											"AND m_pegawai.passwordx = '$password'");
+			$q = mysqli_query($koneksi, "SELECT m_bendahara.*, m_pegawai.*, m_pegawai.kd AS akkd " .
+				"FROM m_bendahara, m_pegawai " .
+				"WHERE m_bendahara.peg_kd = m_pegawai.kd " .
+				"AND m_pegawai.usernamex = '$username' " .
+				"AND m_pegawai.passwordx = '$password'");
 			$row = mysqli_fetch_assoc($q);
 			$total = mysqli_num_rows($q);
 
 			//cek login
-			if ($total != 0)
-				{
+			if ($total != 0) {
 				session_start();
 
 				//nilai
@@ -702,7 +649,7 @@ if ($_POST['btnOK'])
 				$_SESSION['no1_session'] = nosql($row['kode']);
 				$_SESSION['nip1_session'] = nosql($row['kode']);
 				$_SESSION['nm1_session'] = balikin($row['nama']);
-				
+
 				$_SESSION['kd42_session'] = nosql($row['akkd']);
 				$_SESSION['nip42_session'] = nosql($row['kode']);
 				$_SESSION['username42_session'] = $username;
@@ -712,30 +659,30 @@ if ($_POST['btnOK'])
 				$_SESSION['hajirobe_session'] = $hajirobe;
 				$_SESSION['janiskd'] = "admbdh";
 
-				
-				
-								
+
+
+
 				//detail
 				$ku_yes = "Bendahara";
 				$ku_kd = cegah($row['akkd']);
 				$ku_kode = cegah($row['kode']);
 				$ku_nama = cegah($row['nama']);
-			
-					
-				
-				
+
+
+
+
 				//insert
-				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, ".
-											"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES ".
-											"('$x', '$ku_kd', '$ku_kode', '$ku_nama', ".
-											"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
+				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, " .
+					"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES " .
+					"('$x', '$ku_kd', '$ku_kode', '$ku_nama', " .
+					"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
 				//kasi log login ///////////////////////////////////////////////////////////////////////////////////
 
-				
-				
-				
-				
-				
+
+
+
+
+
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -744,9 +691,7 @@ if ($_POST['btnOK'])
 				$ke = "admbdh/index.php";
 				xloc($ke);
 				exit();
-				}
-			else
-				{
+			} else {
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -754,34 +699,32 @@ if ($_POST['btnOK'])
 				//re-direct
 				pekem($pesan, $filenya);
 				exit();
-				}
 			}
+		}
 		//...................................................................................................
-				
 
-				
-				
-				
-				
-				
-				
-		
-		
+
+
+
+
+
+
+
+
+
 		//jika tp041 --> sarpras ..........................................................................
-		if ($tipe == "tp041")
-			{
+		if ($tipe == "tp041") {
 			//query
-			$q = mysqli_query($koneksi, "SELECT m_sarpras.*, m_pegawai.*, m_pegawai.kd AS akkd ".
-											"FROM m_sarpras, m_pegawai ".
-											"WHERE m_sarpras.peg_kd = m_pegawai.kd ".
-											"AND m_pegawai.usernamex = '$username' ".
-											"AND m_pegawai.passwordx = '$password'");
+			$q = mysqli_query($koneksi, "SELECT m_sarpras.*, m_pegawai.*, m_pegawai.kd AS akkd " .
+				"FROM m_sarpras, m_pegawai " .
+				"WHERE m_sarpras.peg_kd = m_pegawai.kd " .
+				"AND m_pegawai.usernamex = '$username' " .
+				"AND m_pegawai.passwordx = '$password'");
 			$row = mysqli_fetch_assoc($q);
 			$total = mysqli_num_rows($q);
 
 			//cek login
-			if ($total != 0)
-				{
+			if ($total != 0) {
 				session_start();
 
 				//nilai
@@ -790,7 +733,7 @@ if ($_POST['btnOK'])
 				$_SESSION['no1_session'] = nosql($row['kode']);
 				$_SESSION['nip1_session'] = nosql($row['kode']);
 				$_SESSION['nm1_session'] = balikin($row['nama']);
-				
+
 				$_SESSION['kd41_session'] = nosql($row['akkd']);
 				$_SESSION['nip41_session'] = nosql($row['kode']);
 				$_SESSION['username41_session'] = $username;
@@ -800,30 +743,30 @@ if ($_POST['btnOK'])
 				$_SESSION['hajirobe_session'] = $hajirobe;
 				$_SESSION['janiskd'] = "adminv";
 
-				
-				
-								
+
+
+
 				//detail
 				$ku_yes = "Sarpras";
 				$ku_kd = cegah($row['akkd']);
 				$ku_kode = cegah($row['kode']);
 				$ku_nama = cegah($row['nama']);
-			
-					
-				
-				
+
+
+
+
 				//insert
-				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, ".
-											"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES ".
-											"('$x', '$ku_kd', '$ku_kode', '$ku_nama', ".
-											"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
+				mysqli_query($koneksi, "INSERT INTO user_log_login(kd, user_kd, user_kode, user_nama, " .
+					"user_posisi, user_jabatan, ipnya, lat_x, lat_y, postdate) VALUES " .
+					"('$x', '$ku_kd', '$ku_kode', '$ku_nama', " .
+					"'$ku_yes', '$ku_yes', '$ipku', '$nilx', '$nily', '$today')");
 				//kasi log login ///////////////////////////////////////////////////////////////////////////////////
 
-				
-				
-				
-				
-				
+
+
+
+
+
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -832,9 +775,7 @@ if ($_POST['btnOK'])
 				$ke = "adminv/index.php";
 				xloc($ke);
 				exit();
-				}
-			else
-				{
+			} else {
 				//diskonek
 				xfree($q);
 				xclose($koneksi);
@@ -842,17 +783,16 @@ if ($_POST['btnOK'])
 				//re-direct
 				pekem($pesan, $filenya);
 				exit();
-				}
 			}
-		//...................................................................................................
-				
-				
-						
-
-												
 		}
+		//...................................................................................................
+
+
+
+
 
 	}
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -869,24 +809,14 @@ ob_start();
 //view //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
 <div class="card card-primary card-tabs">
-  <div class="card-header p-0 pt-1">
-    <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
-      <li class="nav-item">
-        <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">LOGIN</a>
-      </li>
+	<div class="card-body">
+		<div class="tab-content" id="custom-tabs-one-tabContent">
+			<div class="tab-pane show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
 
-    </ul>
-  </div>
-  <div class="card-body">
-    <div class="tab-content" id="custom-tabs-one-tabContent">
-      <div class="tab-pane show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
-
-		<?php
-		echo '<form action="' . $filenya . '" method="post" name="formx">
-		<p>
-		Pilih Tipre User :
-		<br>
-		<select name="tipe" class="btn btn-block btn-warning" required>
+				<?php
+				echo '<form action="' . $filenya . '" method="post" name="formx">
+		<p> Pilih Tipe User :
+		<select name="tipe" class="btn btn-block btn-success" required>
 		<option value="" selected></option>
 		<option value="tp02">Siswa</option>
 		<option value="tp01">Guru Mapel</option>
@@ -900,8 +830,6 @@ ob_start();
 		</select>
 		<br>
 		
-		
-		
 		Username :
 		<br>
 		<input name="usernamex" type="text" size="15" onKeyDown="var keyCode = event.keyCode;
@@ -909,7 +837,7 @@ ob_start();
 			{
 			document.formx.btnOK.focus();
 			document.formx.btnOK.submit();
-			}" class="btn btn-block btn-warning" required>
+			}" class="btn btn-block btn-success" required>
 		<br>
 		
 		
@@ -920,26 +848,26 @@ ob_start();
 			{
 			document.formx.btnOK.focus();
 			document.formx.btnOK.submit();
-			}" class="btn btn-block btn-warning" required>
+			}" class="btn btn-block btn-success" required>
 		<br>
 		
-		<input name="kd" type="hidden" value="'.$x.'">
-		<input name="btnOK" type="submit" value="MASUK &gt;&gt;&gt;" class="btn btn-block btn-danger">
+		<input name="kd" type="hidden" value="' . $x . '">
+		<input name="btnOK" type="submit" value="login" class="btn btn-block btn-success">
 		</p>
 		
 		
 		</form>';
-		?>
-
-
- 
-	  </div>
+				?>
 
 
 
-    </div>
-  </div>
-  <!-- /.card -->
+			</div>
+
+
+
+		</div>
+	</div>
+	<!-- /.card -->
 </div>
 
 
