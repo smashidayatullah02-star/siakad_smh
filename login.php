@@ -882,9 +882,9 @@ ob_start();
       <div class="tab-pane show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
 
 		<?php
-		echo '<form action="'.$filenya.'" method="post" name="formx">
+		echo '<form action="' . $filenya . '" method="post" name="formx">
 		<p>
-		<img src="'.$sumber.'/img/support.png" width="24" height="24" border="0">
+		Pilih Tipre User :
 		<br>
 		<select name="tipe" class="btn btn-block btn-warning" required>
 		<option value="" selected></option>
