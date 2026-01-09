@@ -688,11 +688,6 @@ $jml_abs_alpha = mysqli_num_rows($qtyk);
 
 
 
-
-
-
-
-
 	<div class="col-md-3 col-sm-6 col-xs-12">
 		<div class="info-box">
 			<span class="info-box-icon bg-red"><i class="fa fa-tasks"></i></span>
@@ -720,12 +715,6 @@ $jml_abs_alpha = mysqli_num_rows($qtyk);
 		<!-- /.info-box -->
 	</div>
 
-
-
-
-
-
-
 	<div class="col-md-3 col-sm-6 col-xs-12">
 		<div class="info-box">
 			<span class="info-box-icon bg-warning"><i class="fa fa-calendar"></i></span>
@@ -739,11 +728,6 @@ $jml_abs_alpha = mysqli_num_rows($qtyk);
 		<!-- /.info-box -->
 	</div>
 	<!-- /.col -->
-
-
-
-
-
 
 	<div class="col-md-3 col-sm-6 col-xs-12">
 		<div class="info-box">
@@ -763,11 +747,6 @@ $jml_abs_alpha = mysqli_num_rows($qtyk);
 
 </div>
 <!-- /.row -->
-
-
-
-
-
 
 
 <script>
