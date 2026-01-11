@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> 25b06bd4500866d0350ea8541bc3d9ef8ec4e734
 
 session_start();
 
@@ -18,4 +21,3 @@ session_destroy();
 //re-direct
 xloc($sumber);
 exit();
-?>
