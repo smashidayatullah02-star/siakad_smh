@@ -1,24 +1,4 @@
 <?php
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-/////// SISFOKOL_SMA_v6.78_(Code:Tekniknih)                          ///////
-/////// (Sistem Informasi Sekolah untuk SMA)                    ///////
-///////////////////////////////////////////////////////////////////////
-/////// Dibuat oleh :                                           ///////
-/////// Agus Muhajir, S.Kom                                     ///////
-/////// URL 	:                                               ///////
-///////     * http://github.com/hajirodeon/                          ///////
-///////     * http://sisfokol.wordpress.com/                    ///////
-///////     * http://hajirodeon.wordpress.com/                  ///////
-///////     * http://yahoogroup.com/groups/sisfokol/            ///////
-///////     * https://www.youtube.com/@hajirodeon       ///////
-/////// E-Mail	:                                               ///////
-///////     * hajirodeon@yahoo.com                              ///////
-///////     * hajirodeon@gmail.com                              ///////
-/////// HP/SMS/WA : 081-829-88-54                               ///////
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-
 
 
 class Pager
@@ -111,7 +91,7 @@ function pageList($curpage, $pages, $target)
    	}
 
 //sebelumnya-selanjutnya
-function nextPrev($curpage, $pages)
+function nextPrev($curpage, $pages, $xpage, $target)
    	{
      $next_prev  = "";
 

@@ -1,27 +1,7 @@
 <?php
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-/////// Dibuat oleh :                                           ///////
-/////// Agus Muhajir, S.Kom                                     ///////
-/////// URL 	:                                               ///////
-///////     * http://github.com/hajirodeon                      ///////
-///////     * http://gitlab.com/hajirodeon                      ///////
-///////     * http://sisfokol.wordpress.com                     ///////
-///////     * http://hajirodeon.wordpress.com                   ///////
-///////     * http://yahoogroup.com/groups/sisfokol             ///////
-///////     * https://www.youtube.com/@hajirodeon               ///////
-///////////////////////////////////////////////////////////////////////
-/////// E-Mail	:                                               ///////
-///////     * hajirodeon@yahoo.com                              ///////
-///////     * hajirodeon@gmail.com                              ///////
-/////// HP/SMS/WA : 081-829-88-54                               ///////
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-	  
 
-	  
-	  
-//FUNGSI - FUNGSI ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//FUNGSI - FUNGSI 
 //untuk mencegah si jahil #1
 function cegah($str)
 	{
@@ -493,7 +473,7 @@ function xduit($str)
 		}
 
 	//jika ada 9 digit
-	else if (strlen($harga) == 9)
+	else if (strlen($str) == 9)
 		{
 		$nil1 = substr($str,0,3);
 		$nil2 = substr($str,3,3);
@@ -564,7 +544,7 @@ function xduit2($str)
 		}
 
 	//jika ada 9 digit
-	else if (strlen($harga) == 9)
+	else if (strlen($str) == 9)
 		{
 		$nil1 = substr($str,0,3);
 		$nil2 = substr($str,3,3);
@@ -1310,7 +1290,8 @@ function xduitf($str)
 		//nek null
 		else if (($nil2 == "0") AND ($nil3 == "0")
 			AND ($nil4 == "0") AND ($nil5 == "0")
-			AND ($nil6 == "0") AND ($nil7 == "0"))
+			and ($nil6 == "0") and ($nil6 == "0")
+		)
 			{
 			echo xhuruf($nil4);
 			echo " RIBU ";

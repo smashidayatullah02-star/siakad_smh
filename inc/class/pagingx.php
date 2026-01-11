@@ -112,8 +112,8 @@ function x_pageList($x_curpage, $x_pages, $x_target)
    	return $x_page_list;
    	}
 
-//sebelumnya-selanjutnya
-function x_nextPrev($x_curpage, $x_pages)
+	//sebelumnya-selanjutnya
+	function x_nextPrev($x_curpage, $x_pages, $x_target, $x_xpage)
    	{
      $x_next_prev  = "";
 
